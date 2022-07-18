@@ -1,6 +1,6 @@
 # Project2_Digital_Divide
 
-<Best to view this file in edit mode to see the layout>
+Best to view this file in edit mode to see the layout better
 
 Project Name : The Great Digital Divide
 
