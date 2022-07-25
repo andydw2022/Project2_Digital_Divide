@@ -1,0 +1,82 @@
+app.py calls flask template
+---------------------------
+calls scrape_info in scrape_data.py
+
+contains buttons 
+  <World Map of Speed Rankings> which navigates to world_map.html
+  <Demographics Correlation Bar Chart> which navigates to barchart.html
+  <Demographics Correlation Scatter Plot> which navigates to scatter_plot.html
+
+scrape_data.py
+--------------
+1. Scrape data from url into soup
+https://www.fastmetrics.com/internet-connection-speed-by-country.php#median-internet-speeds-2020
+2. From soup data read title and table into pandas dataframe
+3. From pandas write table data into csv file and html file.  
+4. From pandas insert data into MongoDB   
+	Database internetspeed
+	Collection : countryspeed
+
+--------------------------------------------------------------------------------------
+Download data from :
+https://www.kaggle.com/datasets/sansuthi/gapminder-internet?resource=download
+gap_minder.csv
+
+country        : Full name of country	
+incomeperperson: Gross Domestic Product per capita in constant 2000 US$. 
+                 The inflation but not the differences in the cost of living 
+                 between countries has been taken into account.
+internetuserate: Internet users (per 100 people). 
+                 Internet users are people with access to the worldwide network.
+urbanrate:       Urban population (% of total) Urban population refers to people 
+                 living in urban areas as defined by national statistical offices 
+                 (calculated using World Bank population estimates and urban ratios 
+                  from the United Nations World Urbanization Prospects)
+--------------------------------------------------------------------------------------
+Create tables for Postgres database using https://www.quickdatabasediagrams.com/
+Download ERD and scripts.
+--------------------------------------------------------------------------------------
+Load csv data into Postgres Database
+
+Load gapminder_internet.csv into Postgres table             : Country_Internet_Usage
+Load countryinternetspeedstable.csv into Postgres table     : Country_Speed_Rank
+Load iso_3digit_alpha_country_codes.csv into Postgres table : Country_Population
+From :
+https://www.dnb.com/content/dam/english/dnb-solutions/sales-and-marketing/
+       Code Value	Definition
+       AFG	        Afghanistan
+
+
+From :  https://www.worldometers.info/world-population/population-by-country/
+Load worldpop.csv  into Postgres table                       : Country_population
+
+Create new table combined_internet_country by joining columns :
+country, 
+countrycode, 
+rank,
+download_speed_MBPS
+upload_speed_MBPS
+incomeperperson
+internetusage
+urbanrate
+totpop
+from the above tables
+
+Export this table combined_internet_country to combined_internet_country.csv format
+--------------------------------------------------------------------------------------
+Copy file countries.geojson from BootCamp Repo/Lesson-17-Week 2-Activity-1
+This geojson file contains 3 letter county ISO code
+Using the csv files :  combined_internet_country.csv and countries.geojson
+Use merge tool at 
+
+https://funkeinteraktiv.github.io/geo-data-merger
+
+to merge csv and geojson files into one file using 3 letter country code as
+key. New combined file called :  merge_countries_combined_internet.geojson
+
+--------------------------------------------------------------------------------------
+Use this file  merge_countries_combined_internet.geojson as input to world_map.html (logic.js)
+https://colorbrewer2.org/#type=qualitative&:w scheme=Paired&n=10
+Use file combined_internet_country,csv as input to barchart.html (logic.js)
+Use file combined_internet_country,csv as input to scatter_plot.html (logic.js)
+
